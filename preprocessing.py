@@ -31,4 +31,7 @@ hashed_data = pd.DataFrame(
 res_df = res_df.join(hashed_data)
 res_df.drop(columns='Team', inplace=True)
 
+scaler = MinMaxScaler()
+res_df[res_df.columns] = scaler.fit_transform(res_df[res_df.columns])
+
 res_df.to_parquet(output_file_path + '.parquet', index=True)
