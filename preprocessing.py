@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.feature_extraction import FeatureHasher
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 input_directory_path = Path(input('Input directory: '))
 output_file_path = input('Output directory: ') + '/' + 'fsae_mi_2013-2017'
@@ -34,4 +35,7 @@ res_df.drop(columns='Team', inplace=True)
 scaler = MinMaxScaler()
 res_df[res_df.columns] = scaler.fit_transform(res_df[res_df.columns])
 
-res_df.to_parquet(output_file_path + '.parquet', index=True)
+res_df_train, res_df_test = train_test_split(res_df)
+
+res_df_train.to_parquet(output_file_path + '_train.parquet', index=True)
+res_df_test.to_parquet(output_file_path + '_test.parquet', index=True)
