@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.linear_model import LinearRegression
 
 
@@ -22,3 +23,15 @@ class LRM(Model):
     def __init__(self, X, y, description='Linear regression model', **kwargs):
         Model.__init__(self, description,
                        model=LinearRegression(**kwargs).fit(X, y))
+
+
+if __name__ == '__main__':
+    # getting the data
+    dataset_train = pd.read_parquet(
+        input('Path to the train dataset: '))
+    dataset_test = pd.read_parquet(
+        input('Path to the test dataset: '))
+    X_train = dataset_train.drop(columns='Place')
+    y_train = dataset_train['Place']
+    X_test = dataset_test.drop(columns='Place')
+    y_test = dataset_test['Place']
