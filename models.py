@@ -1,6 +1,5 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
+from sklearn.linear_model import LinearRegression, Ridge
 
 
 class Model:
@@ -26,6 +25,13 @@ class LRM(Model):
                        model=LinearRegression(**kwargs).fit(X, y))
 
 
+class RidgeModel(Model):
+
+    def __init__(self, X, y, description='ridge regression model', **kwargs):
+        Model.__init__(self, description,
+                       model=Ridge(**kwargs).fit(X, y))
+
+
 if __name__ == '__main__':
     # getting the data
     dataset_train = pd.read_parquet(
@@ -42,8 +48,9 @@ if __name__ == '__main__':
     y_pred_lrm = lrm.get_prediction(X_test)
     print(lrm.get_score(X_train, y_train))
     print(lrm.get_score(X_test, y_test))
-    print(r2_score(y_test, y_pred_lrm))
 
-    #lrm = LRM(X_train, y_train, solver='newton-cholesky')
-    #y_pred_lrm = lrm.get_prediction(X_test)
-    #print(lrm.get_score(y_pred_lrm, y_test))
+    # ridge
+    rm = RidgeModel(X_train, y_train, alpha=2.0)
+    y_pred_rm = rm.get_prediction(X_test)
+    print(rm.get_score(X_train, y_train))
+    print(rm.get_score(X_test, y_test))
