@@ -100,4 +100,4 @@ if __name__ == '__main__':
 
     models = [lrm, rm, rfr, gbr]
     with open(input('Path to where to store the models: ') + '/models.pickle', 'wb') as file:
-        pickle.dump(models, file)
+        pickle.dump(models, file, protocol=5)
