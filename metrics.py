@@ -66,6 +66,6 @@ for (model, prediction) in zip(models, predictions):
         'R-squared for',
         model,
         'for train values is',
-        rmse_train,
+        r2_train,
         'and for test values is',
-        rmse_train)
+        r2_test)
