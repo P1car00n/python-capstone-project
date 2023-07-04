@@ -1,3 +1,5 @@
+import pickle
+
 import pandas as pd
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Ridge
@@ -107,3 +109,7 @@ if __name__ == '__main__':
     y_pred_gbr = gbr.get_prediction(X_test)
     print(gbr.get_score(X_train, y_train))
     print(gbr.get_score(X_test, y_test))
+
+    models = [lrm, rm, rfr, gbr]
+    with open(input('Path to where to store the models: ') + '/models.pickle', 'wb') as file:
+        pickle.dump(models, file)
