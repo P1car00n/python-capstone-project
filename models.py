@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
 
 
 class Model:
@@ -20,7 +21,7 @@ class Model:
 
 class LRM(Model):
 
-    def __init__(self, X, y, description='Linear regression model', **kwargs):
+    def __init__(self, X, y, description='linear regression model', **kwargs):
         Model.__init__(self, description,
                        model=LinearRegression(**kwargs).fit(X, y))
 
@@ -35,3 +36,14 @@ if __name__ == '__main__':
     y_train = dataset_train['Place']
     X_test = dataset_test.drop(columns='Place')
     y_test = dataset_test['Place']
+
+    # linear regression
+    lrm = LRM(X_train, y_train, n_jobs=-1)
+    y_pred_lrm = lrm.get_prediction(X_test)
+    print(lrm.get_score(X_train, y_train))
+    print(lrm.get_score(X_test, y_test))
+    print(r2_score(y_test, y_pred_lrm))
+
+    #lrm = LRM(X_train, y_train, solver='newton-cholesky')
+    #y_pred_lrm = lrm.get_prediction(X_test)
+    #print(lrm.get_score(y_pred_lrm, y_test))
