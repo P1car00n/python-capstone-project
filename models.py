@@ -72,11 +72,9 @@ if __name__ == '__main__':
 
     # linear regression
     lrm = LRM(X_train, y_train, n_jobs=-1)
-    y_pred_lrm = lrm.get_prediction(X_test)
 
     # ridge
     rm = RidgeModel(X_train, y_train, alpha=2.0)
-    y_pred_rm = rm.get_prediction(X_test)
 
     # random forest
     rfr = RFR(
@@ -87,7 +85,6 @@ if __name__ == '__main__':
         min_samples_split=5,
         min_samples_leaf=2,
         n_estimators=100)
-    y_pred_rfr = rfr.get_prediction(X_test)
 
     # gradient boosting
     gbr = GBR(
@@ -100,7 +97,6 @@ if __name__ == '__main__':
         min_samples_split=10,
         n_estimators=500,
         subsample=0.8)
-    y_pred_gbr = gbr.get_prediction(X_test)
 
     models = [lrm, rm, rfr, gbr]
     with open(input('Path to where to store the models: ') + '/models.pickle', 'wb') as file:
