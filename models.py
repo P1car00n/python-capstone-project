@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Ridge
 
 
@@ -32,6 +33,18 @@ class RidgeModel(Model):
                        model=Ridge(**kwargs).fit(X, y))
 
 
+class RFR(Model):
+
+    def __init__(
+            self,
+            X,
+            y,
+            description='random forest regression model',
+            **kwargs):
+        Model.__init__(self, description,
+                       model=RandomForestRegressor(**kwargs).fit(X, y))
+
+
 if __name__ == '__main__':
     # getting the data
     dataset_train = pd.read_parquet(
@@ -54,3 +67,16 @@ if __name__ == '__main__':
     y_pred_rm = rm.get_prediction(X_test)
     print(rm.get_score(X_train, y_train))
     print(rm.get_score(X_test, y_test))
+
+    # random forest
+    rfr = RFR(
+        X_train,
+        y_train,
+        max_depth=10,
+        max_features=None,
+        min_samples_split=5,
+        min_samples_leaf=2,
+        n_estimators=100)
+    y_pred_rfr = rfr.get_prediction(X_test)
+    print(rfr.get_score(X_train, y_train))
+    print(rfr.get_score(X_test, y_test))
