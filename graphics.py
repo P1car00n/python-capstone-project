@@ -23,8 +23,21 @@ with open(input('Path to the models\' file : '), "rb") as file:
 predictions = [model.get_prediction(X_test) for model in models]
 
 for (model, prediction) in zip(models, predictions):
-    plt.scatter(y_test, prediction)
-    plt.xlabel('Actual Values')
-    plt.ylabel('Predicted Values')
-    plt.title('Scatter Plot: Actual vs. Predicted')
+    fig, axs = plt.subplots(1, 2, figsize=(10, 4))
+    fig.suptitle(repr(model).capitalize(), fontsize=16)
+
+    axs[0].scatter(y_test, prediction)
+    axs[0].set_xlabel('Actual Values')
+    axs[0].set_ylabel('Predicted Values')
+    axs[0].set_title('Scatter Plot: Actual vs. Predicted')
+
+    residuals = [true - pred for true, pred in zip(y_test, prediction)]
+
+    axs[1].hist(residuals, bins=10)
+    axs[1].scatter(y_test, prediction)
+    axs[1].set_xlabel('Residuals')
+    axs[1].set_ylabel('Frequency')
+    axs[1].set_title('Histogram: Residuals Distribution')
+
+    plt.tight_layout()
     plt.show()
