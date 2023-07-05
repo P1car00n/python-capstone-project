@@ -3,7 +3,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) 
 <img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json">
 
-This project has been created as a final evaluation project for a ML course. It's made with one specific datasetin mind, but may be repurposed fairly swiftly.
+This project has been created as a final evaluation project for a ML course. It's made with one specific dataset in mind, but may be repurposed fairly swiftly.
 
 ## Set-up instructions
 
