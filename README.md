@@ -21,3 +21,4 @@ Loose order:
 2. Both evaluations
 3. models.py
 4. graphics.py
+5. cnn-lstm.py
