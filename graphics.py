@@ -1,6 +1,7 @@
 import pickle
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 from models import GBR, LRM, RFR, RidgeModel
@@ -23,7 +24,7 @@ with open(input('Path to the models\' file : '), "rb") as file:
 predictions = [model.get_prediction(X_test) for model in models]
 
 for (model, prediction) in zip(models, predictions):
-    fig, axs = plt.subplots(1, 2, figsize=(10, 4))
+    fig, axs = plt.subplots(1, 3, figsize=(10, 4))
     fig.suptitle(repr(model).capitalize(), fontsize=16)
 
     axs[0].scatter(y_test, prediction)
@@ -38,6 +39,50 @@ for (model, prediction) in zip(models, predictions):
     axs[1].set_xlabel('Residuals')
     axs[1].set_ylabel('Frequency')
     axs[1].set_title('Histogram: Residuals Distribution')
+
+    # Choose two features for visualization
+    feature1 = "Efficiency"
+    feature2 = "Total"
+    feature1_index = X_train.columns.get_loc(feature1)
+    feature2_index = X_train.columns.get_loc(feature2)
+
+    # Extract the selected features from the training data
+    X_train_selected = X_train.iloc[:, [feature1_index, feature2_index]].values
+
+    # Fit the model with the selected features
+    model.model.fit(X_train_selected, y_train)
+
+    # Create a meshgrid of points to evaluate the decision boundary
+    x_min, x_max = X_train_selected[:, 0].min(
+    ) - 1, X_train_selected[:, 0].max() + 1
+    y_min, y_max = X_train_selected[:, 1].min(
+    ) - 1, X_train_selected[:, 1].max() + 1
+    xx, yy = np.meshgrid(
+        np.arange(
+            x_min, x_max, 0.1), np.arange(
+            y_min, y_max, 0.1))
+    grid_points = np.c_[xx.ravel(), yy.ravel()]
+
+    # Make predictions for the grid points
+    grid_predictions = model.get_prediction(grid_points)
+
+    # Reshape the predictions to match the grid shape
+    grid_predictions = grid_predictions.reshape(xx.shape)
+
+    # Plot the decision boundary
+    contour = axs[2].contourf(
+        xx,
+        yy,
+        grid_predictions,
+        cmap='rainbow',
+        alpha=0.5)
+    axs[2].scatter(X_train_selected[:, 0],
+                   X_train_selected[:, 1], c=y_train, cmap='rainbow')
+    axs[2].set_xlabel(feature1)
+    axs[2].set_ylabel(feature2)
+    axs[2].set_title('Decision Boundary')
+
+    fig.colorbar(contour, axs[2])
 
     plt.tight_layout()
     plt.show()
